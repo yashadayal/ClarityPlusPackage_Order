@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderImplementation implements OrderService {
@@ -20,6 +18,12 @@ public class OrderImplementation implements OrderService {
     public List<String> findOrderByOrderID(List<String> recipientDetailsList, String InstituteID) {
         System.out.println("Inside Implementation");
         List<String> orderExistOrNot = new ArrayList<>();
+        if(recipientDetailsList.isEmpty())
+        {
+            orderExistOrNot.add("There is no pending orders for InstituteID "+InstituteID+". If there is any order yet to receive first fill the form for corresponding orderID.");
+            System.out.println("Outside Implementation");
+            return orderExistOrNot;
+        }
         for(String orderID : recipientDetailsList)
         {
             //take one orderID came from recipient and check it if it exists here or not
@@ -28,6 +32,7 @@ public class OrderImplementation implements OrderService {
             else
                 orderExistOrNot.add(orderID);
         }
+        orderExistOrNot.add("If there is any order yet to receive first fill the form for corresponding orderID.");
         System.out.println("Outside Implementation");
         return orderExistOrNot;
     }

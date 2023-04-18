@@ -1,7 +1,9 @@
 package com.ClarityPlusPackage.OrderMService.Controller;
 
+import com.ClarityPlusPackage.OrderMService.Entity.Order;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,18 +30,28 @@ public class OrderController {
     public List<String> getOrderByInstituteID(@PathVariable("InstituteID") String InstituteID){
         System.out.println("Inside Controller");
         List<String> recipientDetailsList = this.restTemplate.getForObject("http://localhost:9002/recipient/search/"+InstituteID+"/", List.class);
-        for(String o : recipientDetailsList)
-            System.out.println(o);
-        if(recipientDetailsList.isEmpty())
-        {
-            List<String> response = new ArrayList<>();
-            response.add("There is no pending orders for InstituteID "+InstituteID+". If there is any order yet to receive first fill the form for corresponding orderID.");
-        }
         List<String> orderList = this.orderService.findOrderByOrderID(recipientDetailsList, InstituteID);
-        orderList.add("If there is any order yet to receive first fill the form for corresponding orderID.");
         System.out.println("Outside Controller");
         return orderList;
     }
+
+    @GetMapping("/emailOfInstituteID/{InstituteID}/")
+    public String getEmailOfInstituteID(@PathVariable ("InstituteID") String InstituteID){
+        System.out.println("Inside Controller");
+        String emailID = this.restTemplate.getForObject("http://localhost:9003/institute/getEmailID/"+InstituteID+"/",String.class);
+        System.out.println("Outside Controller");
+        return emailID;
+    }
+
+    @GetMapping("/search/logs/{InstituteID}/")
+    public List<String> getLogsByInstituteID(@PathVariable("InstituteID") String InstituteID) {
+        System.out.println("Inside Controller");
+        List<String> logs = this.restTemplate.getForObject("http://localhost:9002/recipient/search/logs/" + InstituteID + "/", List.class);
+        System.out.println("Outside Controller");
+        return logs;
+    }
+
+
 
     //Will be implemented by Double A
     //@PostMapping("")
