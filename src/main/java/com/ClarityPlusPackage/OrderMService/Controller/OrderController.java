@@ -29,7 +29,7 @@ public class OrderController {
     @GetMapping("/ordersOfInstituteID/{InstituteID}/")
     public List<String> getOrderByInstituteID(@PathVariable("InstituteID") String InstituteID){
         System.out.println("Inside Controller");
-        List<String> recipientDetailsList = this.restTemplate.getForObject("http://localhost:9002/recipient/search/"+InstituteID+"/", List.class);
+        List<String> recipientDetailsList = this.restTemplate.getForObject("http://recipient-microservice/recipient/search/"+InstituteID+"/", List.class);
         List<String> orderList = this.orderService.findOrderByOrderID(recipientDetailsList, InstituteID);
         System.out.println("Outside Controller");
         return orderList;
@@ -38,7 +38,8 @@ public class OrderController {
     @GetMapping("/emailOfInstituteID/{InstituteID}/")
     public String getEmailOfInstituteID(@PathVariable ("InstituteID") String InstituteID){
         System.out.println("Inside Controller");
-        String emailID = this.restTemplate.getForObject("http://localhost:9003/institute/getEmailID/"+InstituteID+"/",String.class);
+        String emailID = this.restTemplate.getForObject("http://idtoemailid-microservice/institute/getEmailID/"+InstituteID+"/",String.class);
+        System.out.println(emailID);
         System.out.println("Outside Controller");
         return emailID;
     }
@@ -46,7 +47,7 @@ public class OrderController {
     @GetMapping("/search/logs/{InstituteID}/")
     public List<String> getLogsByInstituteID(@PathVariable("InstituteID") String InstituteID) {
         System.out.println("Inside Controller");
-        List<String> logs = this.restTemplate.getForObject("http://localhost:9002/recipient/search/logs/" + InstituteID + "/", List.class);
+        List<String> logs = this.restTemplate.getForObject("http://recipient-microservice/recipient/search/logs/" + InstituteID + "/", List.class);
         System.out.println("Outside Controller");
         return logs;
     }
