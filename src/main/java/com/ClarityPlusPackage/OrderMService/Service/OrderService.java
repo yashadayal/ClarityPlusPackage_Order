@@ -10,6 +10,6 @@ public interface OrderService {
 
     List findOrderByOrderID(List<String> recipientDetailsList, String InstituteID);
 
-    String saveOrder(Order order);
+    String saveOrder(List<Order> orders);
 
 }

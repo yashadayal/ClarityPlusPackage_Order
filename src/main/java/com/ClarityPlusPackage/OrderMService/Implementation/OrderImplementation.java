@@ -39,16 +39,20 @@ public class OrderImplementation implements OrderService {
     }
 
     @Override
-    public String saveOrder(Order order)
+    public String saveOrder(List<Order> orders)
     {
         System.out.println("Inside saveorder");
-        Order order1=new Order();
-        order1.setOrderID(order.getOrderID());
-        order1.setFirstName(order.getFirstName());
-        order1.setLastName(order.getLastName());
-        order1.setRetailer(order.getRetailer());
-        order1.setDateOfDelivery(order.getDateOfDelivery());
-        this.orderRepo.save(order1);
+        for(Order order:orders)
+        {
+            Order order1=new Order();
+            order1.setOrderID(order.getOrderID());
+            order1.setFirstName(order.getFirstName());
+            order1.setLastName(order.getLastName());
+            order1.setRetailer(order.getRetailer());
+            order1.setDateOfDelivery(order.getDateOfDelivery());
+            this.orderRepo.save(order1);
+        }
+
         System.out.println("Outside savedata");
         return "Success";
     }
