@@ -1,6 +1,8 @@
 package com.ClarityPlusPackage.OrderMService.Entity;
 
 
+import com.ClarityPlusPackage.OrderMService.Config.CustomOrderDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +15,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @Builder
+@JsonDeserialize(using = CustomOrderDeserializer.class)
 public class Order {
 
     @Id

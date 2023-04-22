@@ -1,5 +1,6 @@
 package com.ClarityPlusPackage.OrderMService.Implementation;
 
+import com.ClarityPlusPackage.OrderMService.Entity.Order;
 import com.ClarityPlusPackage.OrderMService.Repository.OrderRepo;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,20 @@ public class OrderImplementation implements OrderService {
         orderExistOrNot.add("If there is any order yet to receive first fill the form for corresponding orderID.");
         System.out.println("Outside Implementation");
         return orderExistOrNot;
+    }
+
+    @Override
+    public String saveOrder(Order order)
+    {
+        System.out.println("Inside saveorder");
+        Order order1=new Order();
+        order1.setOrderID(order.getOrderID());
+        order1.setFirstName(order.getFirstName());
+        order1.setLastName(order.getLastName());
+        order1.setRetailer(order.getRetailer());
+        order1.setDateOfDelivery(order.getDateOfDelivery());
+        this.orderRepo.save(order1);
+        System.out.println("Outside savedata");
+        return "Success";
     }
 }
