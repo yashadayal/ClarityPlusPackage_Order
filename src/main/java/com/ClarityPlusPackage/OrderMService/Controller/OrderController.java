@@ -48,12 +48,10 @@ public class OrderController {
         return logs;
     }
 
-
-
-    //Will be implemented by Double A
     @PostMapping("/saveorderdata")
-    public ResponseEntity<String> saveOrder(@RequestBody List<Order> orders)
+    public ResponseEntity<String> saveOrder(@RequestBody Order[] orders)
     {
+        System.out.println(orders[0]);
         String success=this.orderService.saveOrder(orders);
         return ResponseEntity.ok(success);
     }

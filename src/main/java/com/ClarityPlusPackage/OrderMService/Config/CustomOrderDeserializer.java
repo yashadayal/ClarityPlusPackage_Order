@@ -14,8 +14,8 @@ import java.util.Date;
 public class CustomOrderDeserializer extends JsonDeserializer<Order> {
 
     @Override
-    public Order deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-    throws IOException, JsonProcessingException {
+    public Order deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+        System.out.println("Inside deserializer");
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
         // Extract values from JSON payload
@@ -40,8 +40,7 @@ public class CustomOrderDeserializer extends JsonDeserializer<Order> {
         order1.setFirstName(firstName);
         order1.setLastName(lastName);
         order1.setRetailer(retailer);
-        //order.setReceived(received);
-
+        System.out.println("Outside deserializer");
         return order1;
     }
 }
