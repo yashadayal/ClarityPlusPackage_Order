@@ -7,9 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("/order")
@@ -50,8 +49,11 @@ public class OrderController {
         return logs;
     }
 
-
-
-    //Will be implemented by Double A
-    //@PostMapping("")
+    @PostMapping("/saveorderdata")
+    public ResponseEntity<String> saveOrder(@RequestBody Order[] orders)
+    {
+        System.out.println(orders[0]);
+        String success=this.orderService.saveOrder(orders);
+        return ResponseEntity.ok(success);
+    }
 }
