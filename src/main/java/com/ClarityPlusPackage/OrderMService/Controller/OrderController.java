@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 @CrossOrigin(origins = "*")
-
 @RestController
 @RequestMapping("/order")
-@CrossOrigin("*")
 public class OrderController {
 
     //API Call to Recipient Details
@@ -41,10 +43,18 @@ public class OrderController {
         return emailID;
     }
 
-    @GetMapping("/search/logs/{InstituteID}/")
+    @GetMapping("/search/logsbyID/{InstituteID}/")
     public List<String> getLogsByInstituteID(@PathVariable("InstituteID") String InstituteID) {
         System.out.println("Inside Controller");
         List<String> logs = this.restTemplate.getForObject("http://recipient-microservice/recipient/search/logs/" + InstituteID + "/", List.class);
+        System.out.println("Outside Controller");
+        return logs;
+    }
+
+    @GetMapping("/search/logsbydate/{date}/")
+    public List<String> getLogsByDate(@PathVariable("date") String date) throws ParseException {
+        System.out.println("Inside Controller");
+        List<String> logs = this.orderService.findOrderByDate(date);
         System.out.println("Outside Controller");
         return logs;
     }

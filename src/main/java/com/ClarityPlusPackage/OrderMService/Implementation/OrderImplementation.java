@@ -6,7 +6,11 @@ import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +26,6 @@ public class OrderImplementation implements OrderService {
         if(recipientDetailsList.isEmpty())
         {
             orderExistOrNot.add("There is no pending orders for InstituteID "+InstituteID+". If there is any order yet to receive first fill the form for corresponding orderID.");
-            System.out.println("Outside Implementation");
             return orderExistOrNot;
         }
         for(String orderID : recipientDetailsList)
@@ -33,7 +36,6 @@ public class OrderImplementation implements OrderService {
             else
                 orderExistOrNot.add(orderID);
         }
-//        orderExistOrNot.add("If there is any order yet to receive first fill the form for corresponding orderID.");
         System.out.println("Outside Implementation");
         return orderExistOrNot;
     }
@@ -41,10 +43,16 @@ public class OrderImplementation implements OrderService {
     @Override
     public String saveOrder(Order[] orders)
     {
-        System.out.println("Inside saveorder");
         for(Order order:orders)
             this.orderRepo.save(order);
-        System.out.println("Outside savedata");
-        return "Success";
+        return "Orders saved successfully!";
+    }
+
+    @Override
+    public List<String> findOrderByDate(String date) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date stringToDate = dateFormat.parse(date);
+        List<String> logs = this.orderRepo.findOrdersByDate(stringToDate);
+        return logs;
     }
 }

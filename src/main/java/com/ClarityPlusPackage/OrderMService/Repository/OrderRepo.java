@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderRepo extends JpaRepository<Order, String> {
@@ -15,4 +16,6 @@ public interface OrderRepo extends JpaRepository<Order, String> {
     @Query("SELECT o.OrderID FROM Order o")
     List<String> getAllOrderIDByInstituteID();
 
+    @Query("SELECT o.OrderID, o.FirstName, o.LastName, o.Retailer from Order o where o.DateOfDelivery = :date order by o.DateOfDelivery DESC")
+    List<String> findOrdersByDate(@Param("date") Date date);
 }

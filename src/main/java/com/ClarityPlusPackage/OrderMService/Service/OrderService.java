@@ -2,6 +2,8 @@ package com.ClarityPlusPackage.OrderMService.Service;
 
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,4 +14,5 @@ public interface OrderService {
 
     String saveOrder(Order[] orders);
 
+    List<String> findOrderByDate(String date) throws ParseException;
 }
