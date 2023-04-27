@@ -26,7 +26,7 @@ public class Order {
     String FirstName;
 
     @Column(nullable=false,name="LastName")
-    String  LastName;
+    String LastName;
 
     @Column(nullable=false,name="DateOfDelivery")
     Date DateOfDelivery;

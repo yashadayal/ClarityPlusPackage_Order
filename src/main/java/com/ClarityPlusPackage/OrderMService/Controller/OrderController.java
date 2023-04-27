@@ -37,8 +37,7 @@ public class OrderController {
     @GetMapping("/emailOfInstituteID/{InstituteID}/")
     public String getEmailOfInstituteID(@PathVariable ("InstituteID") String InstituteID){
         System.out.println("Inside Controller");
-        String emailID = this.restTemplate.getForObject("http://idtoemailid-microservice/institute/getEmailID/"+InstituteID+"/",String.class);
-        System.out.println(emailID);
+        String emailID = this.restTemplate.getForObject("http://recipient-microservice/recipient/getEmailID/"+InstituteID+"/",String.class);
         System.out.println("Outside Controller");
         return emailID;
     }
@@ -60,10 +59,15 @@ public class OrderController {
     }
 
     @PostMapping("/saveorderdata")
-    public ResponseEntity<String> saveOrder(@RequestBody Order[] orders)
-    {
+    public ResponseEntity<String> saveOrder(@RequestBody Order[] orders) {
         System.out.println(orders[0]);
         String success=this.orderService.saveOrder(orders);
         return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/verifyOtp/{InstituteID}/{otp}")
+    public ResponseEntity<String> verifyOtp(@PathVariable("InstituteID") String InstituteID, @PathVariable("otp") int otp){
+        String otpVerifyResponse = this.restTemplate.postForObject("http://recipient-microservice/recipient/checkotp/{InstituteID}/{otp}",null,String.class,InstituteID,otp);
+        return ResponseEntity.ok(otpVerifyResponse);
     }
 }
