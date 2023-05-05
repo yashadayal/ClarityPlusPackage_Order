@@ -68,6 +68,7 @@ public class OrderController {
     @PostMapping("/verifyOtp/{InstituteID}/{otp}")
     public ResponseEntity<String> verifyOtp(@PathVariable("InstituteID") String InstituteID, @PathVariable("otp") int otp){
         String otpVerifyResponse = this.restTemplate.postForObject("http://recipient-microservice/recipient/checkotp/{InstituteID}/{otp}",null,String.class,InstituteID,otp);
+        System.out.println(otpVerifyResponse);
         return ResponseEntity.ok(otpVerifyResponse);
     }
 }
