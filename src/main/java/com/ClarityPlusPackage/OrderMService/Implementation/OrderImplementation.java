@@ -1,5 +1,6 @@
 package com.ClarityPlusPackage.OrderMService.Implementation;
 
+import com.ClarityPlusPackage.OrderMService.Entity.LoginDetails;
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
 import com.ClarityPlusPackage.OrderMService.Repository.OrderRepo;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
@@ -55,5 +56,17 @@ public class OrderImplementation implements OrderService {
         Date stringToDate = dateFormat.parse(date);
         List<String> logs = this.orderRepo.findOrdersByDate(stringToDate);
         return logs;
+    }
+
+    @Override
+    public String loginGuard(String emailID, String password) {
+        String emailExistOrNot = this.orderRepo.findByEmailID(emailID);
+        System.out.println(emailExistOrNot);
+        if(emailExistOrNot == null)
+            return "EmailID does not exist. \n Re-check the emailID or contact the admin.";
+        String passwordWithEmailID = this.orderRepo.findPasswordByEmailID(emailExistOrNot);
+        if(!passwordWithEmailID.equals(password))
+            return "Invalid Login";
+        return "Valid Login";
     }
 }

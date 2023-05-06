@@ -1,5 +1,6 @@
 package com.ClarityPlusPackage.OrderMService.Controller;
 
+import com.ClarityPlusPackage.OrderMService.Entity.LoginDetails;
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,17 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
-
-    //API Call to Recipient Details
 
     @Autowired
     RestTemplate restTemplate;
@@ -70,5 +66,13 @@ public class OrderController {
         String otpVerifyResponse = this.restTemplate.postForObject("http://recipient-microservice/recipient/checkotp/{InstituteID}/{otp}",null,String.class,InstituteID,otp);
         System.out.println(otpVerifyResponse);
         return ResponseEntity.ok(otpVerifyResponse);
+    }
+
+    @PostMapping("/login/guard/{emailID}/{password}/")
+    public ResponseEntity<String> loginGuard(@PathVariable("emailID") String emailID, @PathVariable("password") String password) {
+        //to avoid writing custom deserialization logic
+        //sending email and password as pathvariables as @RequestBody is receiving NULL
+        String response = this.orderService.loginGuard(emailID,password);
+        return ResponseEntity.ok(response);
     }
 }

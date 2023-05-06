@@ -1,5 +1,6 @@
 package com.ClarityPlusPackage.OrderMService.Service;
 
+import com.ClarityPlusPackage.OrderMService.Entity.LoginDetails;
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
 
 import java.text.ParseException;
@@ -15,4 +16,7 @@ public interface OrderService {
     String saveOrder(Order[] orders);
 
     List<String> findOrderByDate(String date) throws ParseException;
+
+
+    String loginGuard(String emailID, String password);
 }

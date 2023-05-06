@@ -18,4 +18,10 @@ public interface OrderRepo extends JpaRepository<Order, String> {
 
     @Query("SELECT o.OrderID, o.FirstName, o.LastName, o.Retailer from Order o where o.DateOfDelivery = :date order by o.DateOfDelivery DESC")
     List<String> findOrdersByDate(@Param("date") Date date);
+
+    @Query("select ld.EmailID from LoginDetails ld where ld.EmailID = :emailID")
+    String findByEmailID(@Param("emailID") String emailID);
+
+    @Query("select ld.Password from LoginDetails ld where ld.EmailID = :emailExistOrNot")
+    String findPasswordByEmailID(@Param("emailExistOrNot") String emailExistOrNot);
 }
