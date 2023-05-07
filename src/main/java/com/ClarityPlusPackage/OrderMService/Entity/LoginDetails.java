@@ -19,6 +19,7 @@ public class LoginDetails {
     @Id
     @Column(name = "EmailID")
     String EmailID;
+
     @Column(nullable=false,name="Password")
     String Password;
 }

@@ -19,4 +19,6 @@ public interface OrderService {
 
 
     String loginGuard(String emailID, String password);
+
+    String dataPopulate();
 }

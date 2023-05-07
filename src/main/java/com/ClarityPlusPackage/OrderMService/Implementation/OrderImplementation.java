@@ -2,6 +2,7 @@ package com.ClarityPlusPackage.OrderMService.Implementation;
 
 import com.ClarityPlusPackage.OrderMService.Entity.LoginDetails;
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
+import com.ClarityPlusPackage.OrderMService.Repository.LoginRepo;
 import com.ClarityPlusPackage.OrderMService.Repository.OrderRepo;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class OrderImplementation implements OrderService {
 
     @Autowired
     OrderRepo orderRepo;
+
+    @Autowired
+    LoginRepo loginRepo;
 
     @Override
     public List<String> findOrderByOrderID(List<String> recipientDetailsList, String InstituteID) {
@@ -68,5 +72,14 @@ public class OrderImplementation implements OrderService {
         if(!passwordWithEmailID.equals(password))
             return "Invalid Login";
         return "Valid Login";
+    }
+
+    @Override
+    public String dataPopulate() {
+        LoginDetails details1 = new LoginDetails("guard1@gmail.com","xyz123");
+        this.loginRepo.save(details1);
+        LoginDetails details2 = new LoginDetails("guard2@gmail.com","abc123");
+        this.loginRepo.save(details2);
+        return "Guard Details Registered!";
     }
 }
