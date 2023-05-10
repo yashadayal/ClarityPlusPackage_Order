@@ -10,11 +10,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.util.List;
-@CrossOrigin(origins = "*")
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+@CrossOrigin(origins = "*",allowedHeaders = "*")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 
+    private static final Logger logger=LogManager.getLogger(OrderController.class);
     @Autowired
     RestTemplate restTemplate;
 
@@ -23,40 +27,44 @@ public class OrderController {
 
     @GetMapping("/ordersOfInstituteID/{InstituteID}/")
     public List<String> getOrderByInstituteID(@PathVariable("InstituteID") String InstituteID){
-        System.out.println("Inside Controller");
+        logger.debug("Inside Controller");
         List<String> recipientDetailsList = this.restTemplate.getForObject("http://recipient-microservice/recipient/search/"+InstituteID+"/", List.class);
         List<String> orderList = this.orderService.findOrderByOrderID(recipientDetailsList, InstituteID);
-        System.out.println("Outside Controller");
+        logger.debug("Outside Controller");
         return orderList;
     }
 
     @GetMapping("/emailOfInstituteID/{InstituteID}/")
     public String getEmailOfInstituteID(@PathVariable ("InstituteID") String InstituteID){
-        System.out.println("Inside Controller");
+        logger.debug("Inside Controller");
         String emailID = this.restTemplate.getForObject("http://recipient-microservice/recipient/getEmailID/"+InstituteID+"/",String.class);
-        System.out.println("Outside Controller");
+        logger.debug("Outside Controller");
         return emailID;
     }
 
     @GetMapping("/search/logsbyID/{InstituteID}/")
     public List<String> getLogsByInstituteID(@PathVariable("InstituteID") String InstituteID) {
-        System.out.println("Inside Controller");
+        logger.debug("Inside Controller");
+        logger.info("Searching orders by Institute Id");
         List<String> logs = this.restTemplate.getForObject("http://recipient-microservice/recipient/search/logs/" + InstituteID + "/", List.class);
-        System.out.println("Outside Controller");
+        logger.debug("Outside Controller");
         return logs;
     }
 
     @GetMapping("/search/logsbydate/{date}/")
     public List<String> getLogsByDate(@PathVariable("date") String date) throws ParseException {
-        System.out.println("Inside Controller");
+        logger.debug("Inside Controller");
+        logger.info("Searching orders by date");
         List<String> logs = this.orderService.findOrderByDate(date);
-        System.out.println("Outside Controller");
+        logger.debug("Outside Controller");
         return logs;
     }
 
     @PostMapping("/saveorderdata")
     public ResponseEntity<String> saveOrder(@RequestBody Order[] orders) {
         System.out.println(orders[0]);
+        logger.debug(orders[0]);
+        logger.info("Saving data of orders");
         String success=this.orderService.saveOrder(orders);
         return ResponseEntity.ok(success);
     }
@@ -64,7 +72,7 @@ public class OrderController {
     @PostMapping("/verifyOtp/{InstituteID}/{otp}")
     public ResponseEntity<String> verifyOtp(@PathVariable("InstituteID") String InstituteID, @PathVariable("otp") int otp){
         String otpVerifyResponse = this.restTemplate.postForObject("http://recipient-microservice/recipient/checkotp/{InstituteID}/{otp}",null,String.class,InstituteID,otp);
-        System.out.println(otpVerifyResponse);
+        logger.debug(otpVerifyResponse);
         return ResponseEntity.ok(otpVerifyResponse);
     }
 

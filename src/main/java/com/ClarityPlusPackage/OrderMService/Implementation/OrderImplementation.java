@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 @Service
 public class OrderImplementation implements OrderService {
 
+    private static final Logger logger = LogManager.getLogger(OrderImplementation.class);
     @Autowired
     OrderRepo orderRepo;
 
@@ -26,7 +29,7 @@ public class OrderImplementation implements OrderService {
 
     @Override
     public List<String> findOrderByOrderID(List<String> recipientDetailsList, String InstituteID) {
-        System.out.println("Inside Implementation");
+        logger.debug("Inside Implementation");
         List<String> orderExistOrNot = new ArrayList<>();
         //System.out.println(recipientDetailsList.get(0));
         if(recipientDetailsList.isEmpty())
@@ -42,35 +45,47 @@ public class OrderImplementation implements OrderService {
             else
                 orderExistOrNot.add(orderID);
         }
-        System.out.println("Outside Implementation");
+        logger.debug("Outside Implementation");
         return orderExistOrNot;
     }
 
     @Override
     public String saveOrder(Order[] orders)
     {
+        logger.info("Saving data");
+        logger.debug("Inside Implementation");
         for(Order order:orders)
             this.orderRepo.save(order);
+        logger.debug("Outside Implementation");
         return "Orders saved successfully!";
     }
 
     @Override
     public List<String> findOrderByDate(String date) throws ParseException {
+        logger.debug("Inside Implementation");
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date stringToDate = dateFormat.parse(date);
         List<String> logs = this.orderRepo.findOrdersByDate(stringToDate);
+        logger.debug("Outside Implementation");
         return logs;
     }
 
     @Override
     public String loginGuard(String emailID, String password) {
+        logger.debug("Inside Implementation");
         String emailExistOrNot = this.orderRepo.findByEmailID(emailID);
         System.out.println(emailExistOrNot);
-        if(emailExistOrNot == null)
+        logger.debug("EmailID: {}", emailExistOrNot);
+        if(emailExistOrNot == null) {
+            logger.warn("EmailID does not exist. Re-check the emailID or contact the admin.");
             return "EmailID does not exist. \n Re-check the emailID or contact the admin.";
+        }
         String passwordWithEmailID = this.orderRepo.findPasswordByEmailID(emailExistOrNot);
-        if(!passwordWithEmailID.equals(password))
+        if(!passwordWithEmailID.equals(password)){
+            logger.warn("Invalid Login");
             return "Invalid Login";
+        }
+        logger.debug("Valid Login");
         return "Valid Login";
     }
 
