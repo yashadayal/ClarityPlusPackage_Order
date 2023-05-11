@@ -1,6 +1,5 @@
 package com.ClarityPlusPackage.OrderMService.Controller;
 
-import com.ClarityPlusPackage.OrderMService.Entity.LoginDetails;
 import com.ClarityPlusPackage.OrderMService.Entity.Order;
 import com.ClarityPlusPackage.OrderMService.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
